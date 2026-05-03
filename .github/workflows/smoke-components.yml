@@ -1,0 +1,85 @@
+name: Component smoke tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # --- commitlint: happy path ---
+  commitlint-good:
+    name: commitlint (good commit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create a valid fixture commit
+        run: |
+          git config user.email smoke@driftsys.invalid
+          git config user.name "smoke"
+          git checkout -b smoke-commitlint-good
+          echo x > .smoke
+          git add .smoke
+          git commit -m "feat(repo): smoke fixture"
+
+      - name: Run commitlint (expect success)
+        uses: ./actions/commitlint
+        with:
+          range: HEAD~1..HEAD
+
+  # --- commitlint: error path ---
+  commitlint-bad:
+    name: commitlint (bad commit — expect failure)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create an invalid fixture commit
+        run: |
+          git config user.email smoke@driftsys.invalid
+          git config user.name "smoke"
+          git checkout -b smoke-commitlint-bad
+          echo y > .smoke2
+          git add .smoke2
+          # Deliberately non-conformant message:
+          git commit --no-verify -m "bad commit message without type"
+
+      - name: Run commitlint (expect failure)
+        id: lint
+        uses: ./actions/commitlint
+        with:
+          range: HEAD~1..HEAD
+        continue-on-error: true
+
+      - name: Assert that commitlint failed
+        run: |
+          if [ "${{ steps.lint.outcome }}" != "failure" ]; then
+            echo "::error::Expected commitlint to fail on a bad commit, but it succeeded."
+            exit 1
+          fi
+          echo "::notice::Confirmed: bad commit message correctly rejected."
+
+  # --- bump-push: dry-run ---
+  bump-push-dry-run:
+    name: bump-push (dry-run)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.email smoke@driftsys.invalid
+          git config user.name "smoke"
+
+      - name: Run bump-push in dry-run mode
+        uses: ./actions/bump-push
+        with:
+          dry-run: "true"
