@@ -5,7 +5,7 @@
 # Usage
 
 - [commitlint](usage/commitlint.md)
-- [bump-push](usage/bump-push.md)
+- [release](usage/release.md)
 
 # Recipes
 

@@ -31,7 +31,7 @@ jobs:
 
 ## Release workflow
 
-Pair `bump-push` with a release job that runs only on the default branch:
+Pair `release` with a release job that runs only on the default branch:
 
 ```yaml
 # .github/workflows/release.yml
@@ -46,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: driftsys/ci/actions/bump-push@v0
+      - uses: driftsys/ci/actions/release@v0
 ```
 
 ## GitLab CI
@@ -55,7 +55,7 @@ jobs:
 # .gitlab-ci.yml
 include:
   - component: gitlab.com/driftsys/ci/commitlint@~latest
-  - component: gitlab.com/driftsys/ci/bump-push@~latest
+  - component: gitlab.com/driftsys/ci/release@~latest
     inputs:
       dry-run: false
 ```

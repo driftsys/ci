@@ -80,9 +80,10 @@ third-party catalogs.
 descriptions. Developers browsing for a solution see the full menu; those who
 find a specific component via search can navigate to siblings.
 
-**Consistent naming.** Use `<verb>-<noun>` (e.g. `commitlint`, `bump-push`).
-Avoid abbreviations (`cmt` for `commitlint`) and avoid over-generic names
-(`run`, `execute`, `helper`).
+**Consistent naming.** Use a single verb or `<verb>-<noun>` (e.g. `commitlint`,
+`release`). Avoid abbreviations (`cmt` for `commitlint`) and avoid over-generic
+names (`run`, `execute`, `helper`). Name by intent, not implementation
+(`release` over `bump-push`).
 
 ## Failure modes
 
@@ -151,7 +152,7 @@ transparently. GitLab components that use dock images should call
 
 Based on the above, we adopt the following concrete rules:
 
-1. **One responsibility per component.** commitlint validates commits; bump-push
+1. **One responsibility per component.** commitlint validates commits; release
    bumps and pushes. They do not double as general-purpose shell runners.
 2. **All inputs documented** in both `action.yml`/`template.yml` and
    `docs/src/usage/<name>.md`.

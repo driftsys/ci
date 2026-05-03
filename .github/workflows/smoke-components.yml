@@ -62,9 +62,9 @@ jobs:
           fi
           echo "::notice::Confirmed: bad commit message correctly rejected."
 
-  # --- bump-push: dry-run ---
-  bump-push-dry-run:
-    name: bump-push (dry-run)
+  # --- release: dry-run ---
+  release-dry-run:
+    name: release (dry-run)
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -79,7 +79,7 @@ jobs:
           git config user.email smoke@driftsys.invalid
           git config user.name "smoke"
 
-      - name: Run bump-push in dry-run mode
-        uses: ./actions/bump-push
+      - name: Run release in dry-run mode
+        uses: ./actions/release
         with:
           dry-run: "true"

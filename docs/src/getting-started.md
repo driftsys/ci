@@ -38,5 +38,5 @@ stability requirements.
 ## Next steps
 
 - [commitlint](usage/commitlint.md) — commit-message validation.
-- [bump-push](usage/bump-push.md) — semver bump, tag, and push.
+- [release](usage/release.md) — semver bump, tag, and push.
 - [PR validation recipe](recipes/pr-validation.md) — compose them together.

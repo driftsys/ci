@@ -10,7 +10,7 @@ components can be exercised on real pipelines.
 | Name       | GH Action                        | GitLab Component         |
 | ---------- | -------------------------------- | ------------------------ |
 | commitlint | `driftsys/ci/actions/commitlint` | `driftsys/ci/commitlint` |
-| bump-push  | `driftsys/ci/actions/bump-push`  | `driftsys/ci/bump-push`  |
+| release    | `driftsys/ci/actions/release`    | `driftsys/ci/release`    |
 
 See the [user guide](https://driftsys.github.io/ci) for usage and recipes.
 

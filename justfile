@@ -38,6 +38,9 @@ assemble:
     mdbook build docs
 
 # Full build: check then assemble.
+bump: check assemble
+
+# Full build: check then assemble (alias for bump while we settle the name).
 build: check assemble
 
 # Pre-push gate: validate commits on branch and run a full build.
@@ -45,8 +48,8 @@ verify:
     git std lint --range main..HEAD
     just build
 
-# Bump version, update changelog, commit, and tag (per git-std).
-release:
+# Bump the project version, update changelog, commit + tag (per git-std).
+bump:
     git std bump
 
 # Remove build artifacts.
