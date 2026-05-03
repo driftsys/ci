@@ -7,9 +7,9 @@ inputs:
     description: "Git revision range to validate (e.g. main..HEAD)."
     required: true
   git-std-version:
-    description: "git-std version to install."
+    description: "Minimum git-std version to ensure is installed."
     required: false
-    default: "0.11.12"
+    default: "0.9.0"
 
 runs:
   using: "composite"
@@ -17,10 +17,10 @@ runs:
     - name: Install git-std
       shell: bash
       env:
-        GIT_STD_VERSION: ${{ inputs.git-std-version }}
+        GIT_STD_MIN_VERSION: ${{ inputs.git-std-version }}
       run: |
         curl --proto '=https' --tlsv1.2 -fsSL \
-          "https://github.com/driftsys/git-std/releases/download/v${GIT_STD_VERSION}/install.sh" \
+          https://raw.githubusercontent.com/driftsys/git-std/main/install.sh \
           | GIT_STD_INSTALL_DIR=/usr/local/bin sh
 
     - name: Run commitlint

@@ -23,7 +23,9 @@ jobs:
           mdbook-version: latest
 
       - name: Install dprint
-        uses: dprint/setup-dprint@v0
+        run: |
+          curl -fsSL https://dprint.dev/install.sh | sh
+          echo "${HOME}/.dprint/bin" >> "${GITHUB_PATH}"
 
       - name: Install shfmt
         run: |

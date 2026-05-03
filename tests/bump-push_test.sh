@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 # bash_unit tests for scripts/bump-push.sh.
-# Fakes `git` and `git-std` on PATH.
+# Fakes `git` and `git-std` on PATH using SCRIPT_DIR-relative sentinel files.
 
 setup_suite() {
   TEST_TMP=$(mktemp -d)
   export TEST_TMP
   export PATH="$TEST_TMP/fakebin:$PATH"
   mkdir -p "$TEST_TMP/fakebin"
-  BUMP_CALLS=0
-  PUSH_CALLS=0
-  export BUMP_CALLS PUSH_CALLS
 
-  # Fake git-std that records bump calls.
+  # Fake git-std: records bump calls via a sentinel file relative to $0.
   cat > "$TEST_TMP/fakebin/git-std" <<'EOS'
 #!/usr/bin/env bash
+SELF_DIR=$(cd "$(dirname "$0")" && pwd)
 if [ "${1:-}" = "bump" ]; then
-  echo "bumped" > "$TEST_TMP/bump-called"
+  touch "$SELF_DIR/../bump-called"
   exit 0
 fi
 echo "unexpected git-std args: $*" >&2
@@ -23,12 +21,13 @@ exit 1
 EOS
   chmod +x "$TEST_TMP/fakebin/git-std"
 
-  # Fake git: delegates std to git-std, records push calls.
+  # Fake git: delegates `git std` to git-std; records push calls.
   cat > "$TEST_TMP/fakebin/git" <<'EOS'
 #!/usr/bin/env bash
+SELF_DIR=$(cd "$(dirname "$0")" && pwd)
 case "${1:-}" in
   std) shift; exec git-std "$@" ;;
-  push) echo "pushed" > "$TEST_TMP/push-called"; exit 0 ;;
+  push) touch "$SELF_DIR/../push-called"; exit 0 ;;
   *) echo "unexpected git args: $*" >&2; exit 1 ;;
 esac
 EOS

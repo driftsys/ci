@@ -53,7 +53,11 @@ test_file_mode_rejects_bad_message() {
 }
 
 test_exits_2_on_no_args() {
-  bash scripts/commitlint.sh >/dev/null 2>&1 && exit_code=0 || exit_code=$?
+  if bash scripts/commitlint.sh >/dev/null 2>&1; then
+    exit_code=0
+  else
+    exit_code=$?
+  fi
   assert_equals "2" "$exit_code"
 }
 
