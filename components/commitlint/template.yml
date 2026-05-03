@@ -1,0 +1,25 @@
+spec:
+  inputs:
+    range:
+      description: "Git revision range to validate (e.g. main..HEAD)."
+      default: "$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD"
+    image:
+      description: "Container image with git-std preinstalled."
+      default: "ghcr.io/driftsys/dock:lint-v0.2.0"
+    stage:
+      description: "Pipeline stage for this job."
+      default: "test"
+---
+
+commitlint:
+  stage: $[[ inputs.stage ]]
+  image: $[[ inputs.image ]]
+  variables:
+    GIT_DEPTH: "0"
+  before_script:
+    - dock-bootstrap
+    - . /etc/dock/ca.env 2>/dev/null || true
+  script:
+    - git std lint --range "$[[ inputs.range ]]"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"

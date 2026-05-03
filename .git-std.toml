@@ -1,0 +1,10 @@
+scheme = "semver"
+strict = false
+scopes = ["auto", "repo", "ci", "docs", "actions", "components", "scripts", "tests", "deps", "research"]
+
+[versioning]
+tag_prefix = "v"
+
+[[version_files]]
+path = "project.yaml"
+regex = '^version: "([^"]+)"$'

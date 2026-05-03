@@ -1,0 +1,31 @@
+spec:
+  inputs:
+    image:
+      description: "Container image for the job."
+      default: "ghcr.io/driftsys/dock:core-v0.2.0"
+    stage:
+      description: "Pipeline stage."
+      default: "release"
+    remote:
+      description: "Remote to push to."
+      default: "origin"
+    dry-run:
+      description: "Skip push if true."
+      default: "false"
+      type: boolean
+---
+
+release:
+  stage: $[[ inputs.stage ]]
+  image: $[[ inputs.image ]]
+  variables:
+    GIT_DEPTH: "0"
+  before_script:
+    - dock-bootstrap
+    - . /etc/dock/ca.env 2>/dev/null || true
+  script:
+    - |
+      DRY_RUN=$([ "$[[ inputs.dry-run ]]" = "true" ] && echo 1 || echo 0)
+      REMOTE="$[[ inputs.remote ]]" DRY_RUN="$DRY_RUN" bash scripts/release.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

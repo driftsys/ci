@@ -1,0 +1,34 @@
+name: "driftsys commitlint"
+description: "Validate Conventional Commits in a git range using git-std."
+author: "driftsys"
+
+inputs:
+  range:
+    description: "Git revision range to validate (e.g. main..HEAD)."
+    required: true
+  git-std-version:
+    description: "Minimum git-std version to ensure is installed."
+    required: false
+    default: "0.9.0"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install git-std
+      shell: bash
+      env:
+        GIT_STD_MIN_VERSION: ${{ inputs.git-std-version }}
+      run: |
+        curl --proto '=https' --tlsv1.2 -fsSL \
+          https://raw.githubusercontent.com/driftsys/git-std/main/install.sh \
+          | GIT_STD_INSTALL_DIR=/usr/local/bin bash
+
+    - name: Run commitlint
+      shell: bash
+      env:
+        RANGE: ${{ inputs.range }}
+      run: bash "${{ github.action_path }}/../../scripts/commitlint.sh" "$RANGE"
+
+branding:
+  icon: "git-commit"
+  color: "purple"

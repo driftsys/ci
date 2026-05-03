@@ -1,0 +1,32 @@
+# Build output
+_site/
+target/
+node_modules/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*.swp
+*.swo
+*~
+.idea/
+
+# dprint
+.dprint/
+
+# bash_unit junit output
+junit.xml
+
+# AI agent scratchpads (local only, not tracked)
+.claude/
+!.claude/skills/
+!.claude/skills/**
+.worktrees/
+docs/design/
+docs/plans/
+docs/specs/
+docs/superpowers/

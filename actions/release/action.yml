@@ -1,0 +1,40 @@
+name: "driftsys release"
+description: "Bump semver via git-std, commit + tag, then push."
+author: "driftsys"
+
+inputs:
+  remote:
+    description: "Remote to push to."
+    required: false
+    default: "origin"
+  dry-run:
+    description: "If 'true', run bump + tag but skip push."
+    required: false
+    default: "false"
+  git-std-version:
+    description: "Minimum git-std version to ensure is installed."
+    required: false
+    default: "0.9.0"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install git-std
+      shell: bash
+      env:
+        GIT_STD_MIN_VERSION: ${{ inputs.git-std-version }}
+      run: |
+        curl --proto '=https' --tlsv1.2 -fsSL \
+          https://raw.githubusercontent.com/driftsys/git-std/main/install.sh \
+          | GIT_STD_INSTALL_DIR=/usr/local/bin bash
+
+    - name: Run release
+      shell: bash
+      env:
+        REMOTE: ${{ inputs.remote }}
+        DRY_RUN: ${{ inputs.dry-run == 'true' && '1' || '0' }}
+      run: bash "${{ github.action_path }}/../../scripts/release.sh"
+
+branding:
+  icon: "tag"
+  color: "blue"

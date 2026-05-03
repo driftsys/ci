@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    name: just verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - name: Ensure local main branch ref
+        run: git fetch origin main:refs/heads/main
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Install mdBook
+        uses: peaceiris/actions-mdbook@v2
+        with:
+          mdbook-version: latest
+
+      - name: Install dprint
+        run: |
+          curl -fsSL https://dprint.dev/install.sh | sh
+          echo "${HOME}/.dprint/bin" >> "${GITHUB_PATH}"
+
+      - name: Install shfmt
+        run: |
+          ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')
+          curl -fsSL "https://github.com/mvdan/sh/releases/download/v3.10.0/shfmt_v3.10.0_linux_${ARCH}" \
+            -o /usr/local/bin/shfmt && chmod +x /usr/local/bin/shfmt
+
+      - name: Install shellcheck
+        run: sudo apt-get install -y shellcheck
+
+      - name: Install check-jsonschema
+        run: pip install check-jsonschema
+
+      - name: Install bash_unit
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit \
+            -o tools/bash_unit && chmod +x tools/bash_unit
+
+      - name: Install git-std
+        run: |
+          curl --proto '=https' --tlsv1.2 -fsSL \
+            https://raw.githubusercontent.com/driftsys/git-std/main/install.sh \
+            | GIT_STD_INSTALL_DIR=/usr/local/bin bash
+
+      - name: Configure git identity
+        run: |
+          git config user.email ci@driftsys.invalid
+          git config user.name "driftsys CI"
+
+      - name: Run verify
+        run: just verify
