@@ -1,0 +1,7 @@
+"$schema": https://driftsys.github.io/schemas/project/v1.json
+name: io.driftsys.ci
+version: "0.0.0"
+category: [tool, ci]
+description: Reusable GitHub Actions and GitLab CI components for the driftsys org
+license: MIT
+repository: https://github.com/driftsys/ci

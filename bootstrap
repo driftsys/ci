@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Post-clone setup: ensure git-std is installed and hooks are wired.
+# Run once after `git clone` or `git worktree add`.
+set -euo pipefail
+
+MIN_VERSION="0.9.0"
+INSTALL_DIR="${GIT_STD_INSTALL_DIR:-$HOME/.local/bin}"
+
+have_git_std() {
+  command -v git-std >/dev/null 2>&1 || git std --version >/dev/null 2>&1
+}
+
+version_ge() {
+  printf '%s\n%s\n' "$2" "$1" | sort -V -C
+}
+
+current_version() {
+  git std --version 2>/dev/null | awk '{print $NF}' || echo "0.0.0"
+}
+
+install_git_std() {
+  echo "==> Installing git-std (>= $MIN_VERSION) to $INSTALL_DIR"
+  curl -fsSL https://raw.githubusercontent.com/driftsys/git-std/main/install.sh \
+    | GIT_STD_INSTALL_DIR="$INSTALL_DIR" sh
+}
+
+if ! have_git_std || ! version_ge "$(current_version)" "$MIN_VERSION"; then
+  install_git_std
+fi
+
+echo "==> Bootstrapping repo via git-std"
+git std bootstrap
+
+echo "==> Done. Run 'just --list' to see recipes."
