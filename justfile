@@ -38,9 +38,6 @@ assemble:
     mdbook build docs
 
 # Full build: check then assemble.
-bump: check assemble
-
-# Full build: check then assemble (alias for bump while we settle the name).
 build: check assemble
 
 # Pre-push gate: validate commits on branch and run a full build.
