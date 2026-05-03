@@ -12,7 +12,31 @@ components can be exercised on real pipelines.
 | commitlint | `driftsys/ci/actions/commitlint` | `driftsys/ci/commitlint` |
 | release    | `driftsys/ci/actions/release`    | `driftsys/ci/release`    |
 
-See the [user guide](https://driftsys.github.io/ci) for usage and recipes.
+## Quick example
+
+GitHub Actions (PR validation):
+
+```yaml
+- uses: actions/checkout@v4
+  with: { fetch-depth: 0 }
+- uses: driftsys/ci/actions/commitlint@v0
+  with:
+    range: ${{ github.event.pull_request.base.sha }}..HEAD
+```
+
+GitLab CI (merge-request validation):
+
+```yaml
+include:
+  - component: gitlab.com/driftsys/ci/commitlint@~latest
+```
+
+See the per-component pages for inputs and edge cases.
+
+## Versioning
+
+Components follow semver. Pin to `@v0`, `@v0.1.0`, or `@~latest` per your
+stability requirements.
 
 ## Local development
 

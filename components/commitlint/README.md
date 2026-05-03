@@ -16,22 +16,9 @@ image which ships git-std preinstalled.
 
 ## Example
 
-Canonical (all defaults — lints commits in the MR):
-
 ```yaml
 include:
   - component: gitlab.com/driftsys/ci/commitlint@~latest
-```
-
-## More examples
-
-Lint against a specific anchor (e.g. the last release tag):
-
-```yaml
-include:
-  - component: gitlab.com/driftsys/ci/commitlint@~latest
-    inputs:
-      range: v0.1.0..HEAD
 ```
 
 ## Notes

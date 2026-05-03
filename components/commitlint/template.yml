@@ -16,10 +16,11 @@ commitlint:
   image: $[[ inputs.image ]]
   variables:
     GIT_DEPTH: "0"
+    RANGE: "$[[ inputs.range ]]"
   before_script:
     - dock-bootstrap
     - . /etc/dock/ca.env 2>/dev/null || true
   script:
-    - git std lint --range "$[[ inputs.range ]]"
+    - git std lint --range "$RANGE"
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"

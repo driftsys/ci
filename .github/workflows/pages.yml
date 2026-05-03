@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - "docs/**"
+      - "**/*.md"
+      - "book.toml"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -30,7 +31,7 @@ jobs:
           mdbook-version: latest
 
       - name: Build book
-        run: mdbook build docs
+        run: mdbook build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4

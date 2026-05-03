@@ -17,22 +17,9 @@ image.
 
 ## Example
 
-Canonical (all defaults):
-
 ```yaml
 include:
   - component: gitlab.com/driftsys/ci/release@~latest
-```
-
-## More examples
-
-Dry-run (verify the bump without pushing):
-
-```yaml
-include:
-  - component: gitlab.com/driftsys/ci/release@~latest
-    inputs:
-      dry-run: true
 ```
 
 ## Notes
