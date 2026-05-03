@@ -27,7 +27,7 @@ runs:
       shell: bash
       env:
         RANGE: ${{ inputs.range }}
-      run: bash "${{ github.action_path }}/../../scripts/commitlint.sh" "$RANGE"
+      run: git std lint --range "$RANGE"
 
 branding:
   icon: "git-commit"

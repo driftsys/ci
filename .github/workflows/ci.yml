@@ -40,13 +40,13 @@ jobs:
       - name: Install shellcheck
         run: sudo apt-get install -y shellcheck
 
+      - name: Install actionlint
+        run: |
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) \
+            latest /usr/local/bin
+
       - name: Install check-jsonschema
         run: pip install check-jsonschema
-
-      - name: Install bash_unit
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit \
-            -o tools/bash_unit && chmod +x tools/bash_unit
 
       - name: Install git-std
         run: |

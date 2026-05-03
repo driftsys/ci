@@ -20,12 +20,19 @@ release:
   image: $[[ inputs.image ]]
   variables:
     GIT_DEPTH: "0"
+    DRY_RUN: "$[[ inputs.dry-run ]]"
+    REMOTE: "$[[ inputs.remote ]]"
   before_script:
     - dock-bootstrap
     - . /etc/dock/ca.env 2>/dev/null || true
   script:
+    - export GIT_STD_YES=1
+    - git std bump
     - |
-      DRY_RUN=$([ "$[[ inputs.dry-run ]]" = "true" ] && echo 1 || echo 0)
-      REMOTE="$[[ inputs.remote ]]" DRY_RUN="$DRY_RUN" bash scripts/release.sh
+      if [ "$DRY_RUN" = "true" ]; then
+        echo "DRY_RUN=true — skipping push"
+        exit 0
+      fi
+      git push "$REMOTE" HEAD --follow-tags
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

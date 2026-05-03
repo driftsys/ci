@@ -33,7 +33,17 @@ runs:
       env:
         REMOTE: ${{ inputs.remote }}
         DRY_RUN: ${{ inputs.dry-run == 'true' && '1' || '0' }}
-      run: bash "${{ github.action_path }}/../../scripts/release.sh"
+      run: |
+        set -euo pipefail
+        # git-std prompts on a non-release branch and aborts in non-TTY (CI).
+        # This action is automation, so bypass that guard.
+        export GIT_STD_YES=1
+        git std bump
+        if [ "$DRY_RUN" = "1" ]; then
+          echo "::notice::DRY_RUN=1 — skipping push"
+          exit 0
+        fi
+        git push "$REMOTE" HEAD --follow-tags
 
 branding:
   icon: "tag"

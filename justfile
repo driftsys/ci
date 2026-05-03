@@ -6,14 +6,15 @@ default:
 # Format markdown/json/yaml/toml (dprint) and shell scripts (shfmt).
 fmt:
     dprint fmt
-    shfmt -w -i 2 -ci -sr scripts/ tests/ actions/*/scripts/ bootstrap 2>/dev/null || true
+    shfmt -w -i 2 -ci -sr scripts/ bootstrap 2>/dev/null || true
 
-# Lint: dprint check, markdownlint, shellcheck, shfmt diff, schema validation.
+# Lint: dprint check, markdownlint, shellcheck, shfmt diff, actionlint, schema validation.
 lint:
     dprint check
     npx --yes markdownlint-cli2 "**/*.md" "#node_modules" "#_site" "#docs/superpowers"
-    shellcheck scripts/*.sh tests/*.sh actions/*/scripts/*.sh bootstrap
-    shfmt -d -i 2 -ci -sr scripts/ tests/ actions/*/scripts/ bootstrap
+    shellcheck scripts/*.sh bootstrap
+    shfmt -d -i 2 -ci -sr scripts/ bootstrap
+    actionlint
     just _schema-check
 
 # Apply formatter and auto-fix markdown lint issues.
@@ -26,19 +27,12 @@ lint-fix:
 _schema-check:
     bash scripts/schema-check.sh
 
-# Run bash_unit test suites in tests/.
-test:
-    bash tools/bash_unit tests/*_test.sh
-
-# Run tests then lint.
-check: test lint
-
 # Render the mdBook to _site/.
 assemble:
     mdbook build docs
 
-# Full build: check then assemble.
-build: check assemble
+# Full build: lint then assemble.
+build: lint assemble
 
 # Pre-push gate: validate commits on branch and run a full build.
 verify:
