@@ -14,10 +14,22 @@ pushes.
 
 ## Example
 
+Canonical (all defaults):
+
 ```yaml
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }
 - uses: driftsys/ci/actions/release@v0
+```
+
+## More examples
+
+Dry-run (skip push, useful for verifying the bump locally or in PR smoke):
+
+```yaml
+- uses: driftsys/ci/actions/release@v0
+  with:
+    dry-run: "true"
 ```
 
 ## Notes
@@ -25,4 +37,3 @@ pushes.
 - Requires a git identity (`user.email`, `user.name`) to be configured before
   this step runs.
 - The calling workflow needs `contents: write` permission to push the tag.
-- Use `dry-run: "true"` to test the bump logic without pushing.

@@ -14,12 +14,20 @@ Bumps the semver version via git-std, commits, tags, and pushes.
 
 ### Example
 
+Canonical (all defaults):
+
 ```yaml
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }
 - uses: driftsys/ci/actions/release@v0
+```
+
+Dry-run (skip the push):
+
+```yaml
+- uses: driftsys/ci/actions/release@v0
   with:
-    dry-run: "false"
+    dry-run: "true"
 ```
 
 ## GitLab CI Component
@@ -35,9 +43,18 @@ Bumps the semver version via git-std, commits, tags, and pushes.
 
 ### Example
 
+Canonical (all defaults):
+
+```yaml
+include:
+  - component: gitlab.com/driftsys/ci/release@~latest
+```
+
+Dry-run:
+
 ```yaml
 include:
   - component: gitlab.com/driftsys/ci/release@~latest
     inputs:
-      dry-run: false
+      dry-run: true
 ```

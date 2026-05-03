@@ -14,6 +14,9 @@ Validates Conventional Commit messages in a git range using
 
 ### Example
 
+Canonical (smallest usable form on a PR — `range` has no default; see the
+per-event table below):
+
 ```yaml
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }
@@ -62,9 +65,18 @@ for `range` depends on the workflow trigger.
 
 ### Example
 
+Canonical (all defaults):
+
+```yaml
+include:
+  - component: gitlab.com/driftsys/ci/commitlint@~latest
+```
+
+Lint against a specific anchor:
+
 ```yaml
 include:
   - component: gitlab.com/driftsys/ci/commitlint@~latest
     inputs:
-      range: $CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD
+      range: v0.1.0..HEAD
 ```

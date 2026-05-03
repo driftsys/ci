@@ -16,16 +16,27 @@ image which ships git-std preinstalled.
 
 ## Example
 
+Canonical (all defaults — lints commits in the MR):
+
+```yaml
+include:
+  - component: gitlab.com/driftsys/ci/commitlint@~latest
+```
+
+## More examples
+
+Lint against a specific anchor (e.g. the last release tag):
+
 ```yaml
 include:
   - component: gitlab.com/driftsys/ci/commitlint@~latest
     inputs:
-      range: $CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD
+      range: v0.1.0..HEAD
 ```
 
 ## Notes
 
 - The job only runs on merge request pipelines
   (`CI_PIPELINE_SOURCE == "merge_request_event"`).
-- Set `GIT_DEPTH: 0` is required to access full commit history.
+- `GIT_DEPTH: 0` is required to access full commit history.
 - Override `image` to pin to a specific dock release for reproducibility.
