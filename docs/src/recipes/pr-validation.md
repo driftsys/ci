@@ -56,6 +56,4 @@ jobs:
 include:
   - component: gitlab.com/driftsys/ci/commitlint@~latest
   - component: gitlab.com/driftsys/ci/release@~latest
-    inputs:
-      dry-run: false
 ```
