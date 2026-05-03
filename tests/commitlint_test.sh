@@ -33,7 +33,6 @@ if [ "${1:-}" = "std" ]; then
   shift
   exec git-std "$@"
 fi
-# Fall through to real git for everything else.
 exec env -i PATH=/usr/bin:/bin HOME="$HOME" git "$@"
 EOS
   chmod +x "$TEST_TMP/fakebin/git"
@@ -54,9 +53,8 @@ test_file_mode_rejects_bad_message() {
 }
 
 test_exits_2_on_no_args() {
-  assert_fails "bash scripts/commitlint.sh"
-  actual_exit=$(bash scripts/commitlint.sh 2>/dev/null; echo $?)
-  assert_equals "2" "$(bash scripts/commitlint.sh >/dev/null 2>&1; echo $?) || true"
+  bash scripts/commitlint.sh >/dev/null 2>&1 && exit_code=0 || exit_code=$?
+  assert_equals "2" "$exit_code"
 }
 
 test_file_mode_requires_path_arg() {
