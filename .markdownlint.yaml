@@ -1,0 +1,31 @@
+# Defaults: enable everything.
+default: true
+
+# Line length: 80 chars, but not for tables or code blocks.
+MD013:
+  line_length: 80
+  tables: false
+  code_blocks: false
+  headings: false
+
+# Allow duplicate headings under different parents.
+MD024:
+  siblings_only: true
+
+# Require atx-style headings (# Title), not setext.
+MD003:
+  style: atx
+
+# Require dash for unordered lists.
+MD004:
+  style: dash
+
+# Allow inline HTML (dprint may emit it).
+MD033: false
+
+# Defer style enforcement (emphasis, bold) to dprint.
+MD049: false
+MD050: false
+
+# SUMMARY.md is allowed without a single top-level title.
+MD041: false
