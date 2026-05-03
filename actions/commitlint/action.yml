@@ -21,7 +21,7 @@ runs:
       run: |
         curl --proto '=https' --tlsv1.2 -fsSL \
           https://raw.githubusercontent.com/driftsys/git-std/main/install.sh \
-          | GIT_STD_INSTALL_DIR=/usr/local/bin sh
+          | GIT_STD_INSTALL_DIR=/usr/local/bin bash
 
     - name: Run commitlint
       shell: bash
