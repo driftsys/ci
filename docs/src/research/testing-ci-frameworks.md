@@ -22,18 +22,17 @@ for every trivial change.
 
 ## Approach A: Static checks only
 
-**What it covers:** JSON schema validation of `action.yml` and
-`template.yml`; shellcheck and shfmt for embedded shell.
+**What it covers:** JSON schema validation of `action.yml` and `template.yml`;
+shellcheck and shfmt for embedded shell.
 
 **Tooling:** `check-jsonschema` (Python, reads from schemastore.org),
 shellcheck, shfmt.
 
-**Strengths:** Fast (seconds), no runner required, catches the most common
-class of glue errors (wrong field names, invalid YAML structure, shell syntax
-errors).
+**Strengths:** Fast (seconds), no runner required, catches the most common class
+of glue errors (wrong field names, invalid YAML structure, shell syntax errors).
 
-**Weaknesses:** Does not catch logic errors in scripts, missing `env:`
-bindings, wrong `uses:` path references, or runner-environment mismatches.
+**Weaknesses:** Does not catch logic errors in scripts, missing `env:` bindings,
+wrong `uses:` path references, or runner-environment mismatches.
 
 **Verdict:** Necessary but not sufficient. Cheap enough to always run.
 
@@ -42,13 +41,13 @@ bindings, wrong `uses:` path references, or runner-environment mismatches.
 **What it covers:** Unit tests for `scripts/*.sh` using a test framework that
 fakes `git`, `git-std`, and other dependencies via PATH manipulation.
 
-**Tooling:** [`pgrange/bash_unit`](https://github.com/pgrange/bash_unit) —
-a lightweight shell test framework. Tests live alongside the scripts in
+**Tooling:** [`pgrange/bash_unit`](https://github.com/pgrange/bash_unit) — a
+lightweight shell test framework. Tests live alongside the scripts in
 `tests/<name>_test.sh`.
 
 **Strengths:** Fast (milliseconds per test), no docker, no network. Tests the
-branching logic that static analysis cannot reach. Fakes let you drive
-failure paths that are hard to reproduce with real git history.
+branching logic that static analysis cannot reach. Fakes let you drive failure
+paths that are hard to reproduce with real git history.
 
 **Weaknesses:** Tests run against fakes, not real binaries. A mismatch between
 the fake's behaviour and `git-std`'s actual output format would let bugs
@@ -83,9 +82,9 @@ binding errors and path issues that static checks miss.
   production.
 
 **Verdict for `driftsys/ci`:** Skip `act` in CI. The real runner (Approach D)
-covers the same ground with higher fidelity and less maintenance overhead.
-`act` remains useful as an optional developer tool for rapid local iteration
-but is not part of the required test suite.
+covers the same ground with higher fidelity and less maintenance overhead. `act`
+remains useful as an optional developer tool for rapid local iteration but is
+not part of the required test suite.
 
 ## Approach D: Live GH Actions smoke tests
 
@@ -117,9 +116,9 @@ maintenance overhead beyond writing the fixture.
 easily test error paths (e.g. a deliberately bad commit message) without
 additional fixture management.
 
-**Error-path testing:** Use `continue-on-error: true` on a step that is
-expected to fail, then assert `steps.<id>.outcome == 'failure'` in the
-next step. This pattern tests the failure mode without failing the job.
+**Error-path testing:** Use `continue-on-error: true` on a step that is expected
+to fail, then assert `steps.<id>.outcome == 'failure'` in the next step. This
+pattern tests the failure mode without failing the job.
 
 **Verdict:** Essential for every action. Run on every PR and on push to main.
 
@@ -128,9 +127,9 @@ next step. This pattern tests the failure mode without failing the job.
 **What it covers:** A GitLab CI pipeline on the GL mirror that includes each
 component and runs it against a fixture merge request.
 
-**Tooling:** A `.gitlab-ci.yml` in the mirror that uses `include: component:`
-to pull in the components from the same repo. Triggered on tag push or
-manually via `glab pipeline run`.
+**Tooling:** A `.gitlab-ci.yml` in the mirror that uses `include: component:` to
+pull in the components from the same repo. Triggered on tag push or manually via
+`glab pipeline run`.
 
 **Strengths:** Tests the actual GitLab component YAML syntax, the dock image
 integration, and `$CI_*` variable bindings. This is the only way to catch
@@ -145,12 +144,12 @@ mirror is wired.
 
 ## Approach F: Static GitLab CI lint
 
-**What it covers:** `glab ci lint` (or the GitLab API `POST /projects/:id/ci/lint`)
-validates `template.yml` syntax and component spec structure without running
-a pipeline.
+**What it covers:** `glab ci lint` (or the GitLab API
+`POST /projects/:id/ci/lint`) validates `template.yml` syntax and component spec
+structure without running a pipeline.
 
-**Tooling:** `glab` CLI or `check-jsonschema` against the GitLab CI JSON
-schema (schemastore.org).
+**Tooling:** `glab` CLI or `check-jsonschema` against the GitLab CI JSON schema
+(schemastore.org).
 
 **Verdict:** We already include this via `scripts/schema-check.sh` (Approach A).
 No additional step required.
@@ -166,18 +165,17 @@ Run by `just verify` → `just build` → `just check`:
 - `dprint check` — formatting.
 - `markdownlint-cli2` — markdown structure.
 - `shellcheck` + `shfmt -d` — shell quality.
-- `scripts/schema-check.sh` — `action.yml` + `template.yml` schema
-  validation.
+- `scripts/schema-check.sh` — `action.yml` + `template.yml` schema validation.
 - `bash tools/bash_unit tests/*_test.sh` — unit tests for shared scripts.
 
 ### Layer 2 — Live GH Actions smoke (every PR, ~ 5 min)
 
 Run by `.github/workflows/smoke-components.yml`:
 
-- One smoke job per action, using `uses: ./actions/<name>` against a
-  synthesized fixture commit.
-- At least one error-path smoke per action (bad input should fail the step,
-  and we assert `outcome == 'failure'`).
+- One smoke job per action, using `uses: ./actions/<name>` against a synthesized
+  fixture commit.
+- At least one error-path smoke per action (bad input should fail the step, and
+  we assert `outcome == 'failure'`).
 
 ### Layer 3 — GitLab mirror smoke (on tag, async)
 
@@ -197,13 +195,13 @@ Run by `.github/workflows/smoke-components.yml`:
 
 The three layers are implemented as follows in this repo:
 
-| Layer | Location                                   | Status |
-| ----- | ------------------------------------------ | ------ |
-| 1     | `just verify` + `.github/workflows/ci.yml` | Shipped in this PR |
-| 2     | `.github/workflows/smoke-components.yml`   | Shipped in this PR |
+| Layer | Location                                   | Status               |
+| ----- | ------------------------------------------ | -------------------- |
+| 1     | `just verify` + `.github/workflows/ci.yml` | Shipped in this PR   |
+| 2     | `.github/workflows/smoke-components.yml`   | Shipped in this PR   |
 | 3     | `.gitlab-ci.yml` on GL mirror              | Pending mirror setup |
 
-Every new component added to this repo must include Layer 1 coverage
-(a `tests/<name>_test.sh` with at least the happy path and one error path)
-and Layer 2 coverage (a smoke step in `smoke-components.yml`). This is
-enforced by the AGENTS.md checklist for adding a component.
+Every new component added to this repo must include Layer 1 coverage (a
+`tests/<name>_test.sh` with at least the happy path and one error path) and
+Layer 2 coverage (a smoke step in `smoke-components.yml`). This is enforced by
+the AGENTS.md checklist for adding a component.

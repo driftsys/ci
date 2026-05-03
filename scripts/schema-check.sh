@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ACTION_SCHEMA="https://json.schemastore.org/github-action.json"
-GL_SCHEMA="https://json.schemastore.org/gitlab-ci.json"
+GL_SCHEMA="https://gitlab.com/gitlab-org/gitlab-foss/-/raw/master/app/assets/javascripts/editor/schema/ci.json"
 
 fail=0
 
@@ -15,12 +15,24 @@ for f in actions/*/action.yml; do
   fi
 done
 
+# GitLab components use a two-document YAML: a `spec:` header followed by
+# the job definition. check-jsonschema can't parse multi-document YAML, so
+# we split on the `---` separator and validate only the job-definition doc
+# against the GitLab CI schema.
 for f in components/*/template.yml; do
   [ -f "$f" ] || continue
-  echo "==> Validating $f against GitLab CI schema"
-  if ! check-jsonschema --schemafile "$GL_SCHEMA" "$f"; then
+  echo "==> Validating $f against GitLab CI schema (job document)"
+  tmp=$(mktemp --suffix=.yml)
+  awk 'sep { print } /^---[[:space:]]*$/ { sep = 1 }' "$f" > "$tmp"
+  if [ ! -s "$tmp" ]; then
+    echo "warning: $f has no second YAML document; skipping" >&2
+    rm -f "$tmp"
+    continue
+  fi
+  if ! check-jsonschema --schemafile "$GL_SCHEMA" "$tmp"; then
     fail=1
   fi
+  rm -f "$tmp"
 done
 
 exit "$fail"

@@ -8,11 +8,11 @@ image which ships git-std preinstalled.
 
 ## Inputs
 
-| Name     | Required | Default                                  | Description                    |
-| -------- | -------- | ---------------------------------------- | ------------------------------ |
-| `range`  | no       | `$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD`  | Git range to validate.         |
-| `image`  | no       | `ghcr.io/driftsys/dock:lint-v0.2.0`     | Container image with git-std.  |
-| `stage`  | no       | `test`                                   | Pipeline stage.                |
+| Name    | Required | Default                                 | Description                   |
+| ------- | -------- | --------------------------------------- | ----------------------------- |
+| `range` | no       | `$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD` | Git range to validate.        |
+| `image` | no       | `ghcr.io/driftsys/dock:lint-v0.2.0`     | Container image with git-std. |
+| `stage` | no       | `test`                                  | Pipeline stage.               |
 
 ## Example
 
@@ -25,6 +25,7 @@ include:
 
 ## Notes
 
-- The job only runs on merge request pipelines (`CI_PIPELINE_SOURCE == "merge_request_event"`).
+- The job only runs on merge request pipelines
+  (`CI_PIPELINE_SOURCE == "merge_request_event"`).
 - Set `GIT_DEPTH: 0` is required to access full commit history.
 - Override `image` to pin to a specific dock release for reproducibility.

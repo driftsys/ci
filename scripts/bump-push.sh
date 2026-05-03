@@ -8,6 +8,10 @@ set -euo pipefail
 REMOTE="${REMOTE:-origin}"
 DRY_RUN="${DRY_RUN:-0}"
 
+# git-std prompts before bumping on a non-release branch and aborts in
+# non-TTY (CI) contexts. This action is automation, so bypass that guard.
+export GIT_STD_YES=1
+
 git std bump
 
 if [ "$DRY_RUN" = "1" ]; then

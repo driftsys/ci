@@ -6,11 +6,11 @@ Bumps the semver version via git-std, commits, tags, and pushes.
 
 ### Inputs
 
-| Name              | Required | Default   | Description                             |
-| ----------------- | -------- | --------- | --------------------------------------- |
-| `remote`          | no       | `origin`  | Remote to push to.                      |
-| `dry-run`         | no       | `false`   | If `true`, bump + tag but skip push.    |
-| `git-std-version` | no       | `0.11.12` | git-std release to install.             |
+| Name              | Required | Default   | Description                          |
+| ----------------- | -------- | --------- | ------------------------------------ |
+| `remote`          | no       | `origin`  | Remote to push to.                   |
+| `dry-run`         | no       | `false`   | If `true`, bump + tag but skip push. |
+| `git-std-version` | no       | `0.11.12` | git-std release to install.          |
 
 ### Example
 
@@ -26,12 +26,12 @@ Bumps the semver version via git-std, commits, tags, and pushes.
 
 ### Inputs
 
-| Name       | Required | Default                                    | Description                   |
-| ---------- | -------- | ------------------------------------------ | ----------------------------- |
-| `image`    | no       | `ghcr.io/driftsys/dock:core-v0.2.0`       | Container image.              |
-| `stage`    | no       | `release`                                  | Pipeline stage.               |
-| `remote`   | no       | `origin`                                   | Remote to push to.            |
-| `dry-run`  | no       | `false`                                    | Skip push if true.            |
+| Name      | Required | Default                             | Description        |
+| --------- | -------- | ----------------------------------- | ------------------ |
+| `image`   | no       | `ghcr.io/driftsys/dock:core-v0.2.0` | Container image.   |
+| `stage`   | no       | `release`                           | Pipeline stage.    |
+| `remote`  | no       | `origin`                            | Remote to push to. |
+| `dry-run` | no       | `false`                             | Skip push if true. |
 
 ### Example
 

@@ -29,3 +29,6 @@ MD050: false
 
 # SUMMARY.md is allowed without a single top-level title.
 MD041: false
+
+# mdBook SUMMARY.md uses multiple H1 headings as part titles.
+MD025: false

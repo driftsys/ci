@@ -7,10 +7,10 @@ Validates Conventional Commit messages in a git range using
 
 ### Inputs
 
-| Name              | Required | Default   | Description                              |
-| ----------------- | -------- | --------- | ---------------------------------------- |
+| Name              | Required | Default   | Description                                |
+| ----------------- | -------- | --------- | ------------------------------------------ |
 | `range`           | yes      | —         | Git range to validate (e.g. `main..HEAD`). |
-| `git-std-version` | no       | `0.11.12` | git-std release to install.              |
+| `git-std-version` | no       | `0.11.12` | git-std release to install.                |
 
 ### Example
 
@@ -26,11 +26,11 @@ Validates Conventional Commit messages in a git range using
 
 ### Inputs
 
-| Name     | Required | Default                               | Description                    |
-| -------- | -------- | ------------------------------------- | ------------------------------ |
-| `range`  | no       | `$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD` | Git range to validate.         |
-| `image`  | no       | `ghcr.io/driftsys/dock:lint-v0.2.0`  | Container image with git-std.  |
-| `stage`  | no       | `test`                                | Pipeline stage.                |
+| Name    | Required | Default                                 | Description                   |
+| ------- | -------- | --------------------------------------- | ----------------------------- |
+| `range` | no       | `$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD` | Git range to validate.        |
+| `image` | no       | `ghcr.io/driftsys/dock:lint-v0.2.0`     | Container image with git-std. |
+| `stage` | no       | `test`                                  | Pipeline stage.               |
 
 ### Example
 

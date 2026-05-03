@@ -17,16 +17,16 @@ GitLab components consume builder images from `driftsys/dock`
 
 ## Build commands
 
-| Command         | What it does                                                              |
-| --------------- | ------------------------------------------------------------------------- |
-| `just fmt`      | Format md/json/yaml (dprint) and shell (shfmt).                           |
-| `just lint`     | dprint check, markdownlint-cli2, shellcheck, action/component schema.     |
-| `just lint-fix` | Apply auto-fixes for lint where supported.                                |
-| `just test`     | bash_unit suites in `tests/`.                                             |
-| `just check`    | `test` + `lint`.                                                          |
-| `just assemble` | Render mdBook to `_site/`.                                                |
-| `just build`    | `check` + `assemble`.                                                     |
-| `just verify`   | `git std lint --range main..HEAD` + `just build`. Run before PR.          |
+| Command         | What it does                                                          |
+| --------------- | --------------------------------------------------------------------- |
+| `just fmt`      | Format md/json/yaml (dprint) and shell (shfmt).                       |
+| `just lint`     | dprint check, markdownlint-cli2, shellcheck, action/component schema. |
+| `just lint-fix` | Apply auto-fixes for lint where supported.                            |
+| `just test`     | bash_unit suites in `tests/`.                                         |
+| `just check`    | `test` + `lint`.                                                      |
+| `just assemble` | Render mdBook to `_site/`.                                            |
+| `just build`    | `check` + `assemble`.                                                 |
+| `just verify`   | `git std lint --range main..HEAD` + `just build`. Run before PR.      |
 
 Run `./bootstrap` after clone or worktree add (installs git-std and hooks).
 

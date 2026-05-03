@@ -1,16 +1,16 @@
 # bump-push
 
 Composite GitHub Action that bumps the semver version via
-[git-std](https://github.com/driftsys/git-std), commits + tags the release,
-then pushes.
+[git-std](https://github.com/driftsys/git-std), commits + tags the release, then
+pushes.
 
 ## Inputs
 
-| Name              | Required | Default   | Description                           |
-| ----------------- | -------- | --------- | ------------------------------------- |
-| `remote`          | no       | `origin`  | Remote to push to.                    |
-| `dry-run`         | no       | `false`   | If `true`, bump + tag but skip push.  |
-| `git-std-version` | no       | `0.11.12` | git-std release to install.           |
+| Name              | Required | Default   | Description                          |
+| ----------------- | -------- | --------- | ------------------------------------ |
+| `remote`          | no       | `origin`  | Remote to push to.                   |
+| `dry-run`         | no       | `false`   | If `true`, bump + tag but skip push. |
+| `git-std-version` | no       | `0.11.12` | git-std release to install.          |
 
 ## Example
 

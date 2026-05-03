@@ -6,7 +6,7 @@
 set -euo pipefail
 
 usage() {
-  cat <<'EOF'
+  cat << 'EOF'
 Usage:
   commitlint.sh <git-range>        validate all commits in range
   commitlint.sh --file <msg-file>  validate a single message file
@@ -19,7 +19,10 @@ if [ "$#" -lt 1 ]; then
 fi
 
 if [ "$1" = "--file" ]; then
-  [ "$#" -eq 2 ] || { usage >&2; exit 2; }
+  [ "$#" -eq 2 ] || {
+    usage >&2
+    exit 2
+  }
   exec git std lint --file "$2"
 fi
 
