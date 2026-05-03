@@ -14,6 +14,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Ensure local main branch ref
+        run: git fetch origin main:refs/heads/main
+
       - name: Install just
         uses: extractions/setup-just@v2
 
