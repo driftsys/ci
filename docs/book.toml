@@ -2,7 +2,7 @@
 title = "driftsys/ci"
 authors = ["driftsys"]
 language = "en"
-src = "src"
+src = "."
 
 [build]
 build-dir = "../_site"

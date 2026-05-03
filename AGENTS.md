@@ -10,7 +10,7 @@ A library of **reusable CI building blocks** for the driftsys org:
   scripts.
 - `components/<name>/` — GitLab CI components, each with `template.yml`.
 - `scripts/<name>.sh` — shared shell logic, bash_unit-tested under `tests/`.
-- `docs/` — mdBook published to GitHub Pages.
+- `docs/` — mdBook (sources at the top of `docs/`) published to GitHub Pages.
 
 GitLab components consume builder images from `driftsys/dock`
 (`ghcr.io/driftsys/dock:<image>-v<version>`).
@@ -37,7 +37,7 @@ Run `./bootstrap` after clone or worktree add (installs git-std and hooks).
 - One concern per shell script. Shared logic lives in `scripts/`; `action.yml`
   and `template.yml` call into it.
 - Every input/output is documented in both `action.yml`/`template.yml` and
-  `docs/src/usage/<name>.md`.
+  `docs/usage/<name>.md`.
 - Tests: each `scripts/<name>.sh` has a sibling `tests/<name>_test.sh`.
   End-to-end smoke tests live in `.github/workflows/smoke-components.yml`.
 
@@ -60,5 +60,5 @@ Run `./bootstrap` after clone or worktree add (installs git-std and hooks).
 1. Create `actions/<name>/{action.yml,README.md,scripts/run.sh}`.
 2. Create `components/<name>/{template.yml,README.md}`.
 3. Add `scripts/<name>.sh` (shared logic) and `tests/<name>_test.sh`.
-4. Add `docs/src/usage/<name>.md` and link from `docs/src/SUMMARY.md`.
+4. Add `docs/usage/<name>.md` and link from `docs/SUMMARY.md`.
 5. Add a smoke step in `.github/workflows/smoke-components.yml`.
