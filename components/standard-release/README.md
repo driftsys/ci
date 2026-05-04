@@ -1,12 +1,12 @@
 # standard-release (GitLab CI component)
 
 The driftsys default release pipeline as a GitLab CI component. One include line
-gets you commit-message validation on every MR plus a semver bump-and-tag on
-every push to the default branch.
+gets you commit-message validation on every MR plus a semver bump-and-tag plus a
+published release page with notes on every push to the default branch.
 
-It's a thin preset over the [commitlint](../commitlint/README.md) and
-[release](../release/README.md) components — same defaults, fewer lines of YAML
-in your repo.
+It's a thin preset over the [commitlint](../commitlint/README.md),
+[release](../release/README.md), and [release-notes](../release-notes/README.md)
+components — same defaults, fewer lines of YAML in your repo.
 
 ## Inputs
 
@@ -26,9 +26,11 @@ include:
 
 ## Notes
 
-- The component pins its sub-components (`commitlint`, `release`) at
-  `$CI_COMPONENT_REF`, so `standard-release@v0.2.0` reproducibly uses the v0.2.0
-  sub-components.
+- The component pins its sub-components (`commitlint`, `release`,
+  `release-notes`) at `$CI_COMPONENT_REF`, so `standard-release@v0.2.0`
+  reproducibly uses the v0.2.0 sub-components.
+- The `release-notes` job runs on tag pipelines (after `release` pushes the
+  tag), not on the default-branch pipeline that the `release` job belongs to.
 - For finer control over a sub-component, include it directly instead of (or in
   addition to) `standard-release`; the preset only exposes the most common
   subset of inputs.

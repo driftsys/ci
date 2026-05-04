@@ -49,6 +49,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,7 +61,24 @@ jobs:
           git config user.email release@driftsys.invalid
           git config user.name "driftsys release"
 
-      - uses: driftsys/ci/actions/release@v0
+      - id: release
+        uses: driftsys/ci/actions/release@v0
         with:
           remote: ${{ inputs.remote }}
           dry-run: ${{ inputs.dry-run && 'true' || 'false' }}
+
+  release-notes:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !inputs.dry-run
+    name: release-notes
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: driftsys/ci/actions/release-notes@v0
+        with:
+          tag: ${{ needs.release.outputs.tag }}

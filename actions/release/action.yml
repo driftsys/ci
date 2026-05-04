@@ -16,6 +16,11 @@ inputs:
     required: false
     default: "0.9.0"
 
+outputs:
+  tag:
+    description: "The newly created tag (e.g. v0.2.0). Empty if no bump happened."
+    value: ${{ steps.run.outputs.tag }}
+
 runs:
   using: "composite"
   steps:
@@ -29,6 +34,7 @@ runs:
           | GIT_STD_INSTALL_DIR=/usr/local/bin bash
 
     - name: Run release
+      id: run
       shell: bash
       env:
         REMOTE: ${{ inputs.remote }}
@@ -39,8 +45,10 @@ runs:
         # This action is automation, so bypass that guard.
         export GIT_STD_YES=1
         git std bump
+        tag=$(git describe --tags --abbrev=0)
+        echo "tag=$tag" >> "$GITHUB_OUTPUT"
         if [ "$DRY_RUN" = "1" ]; then
-          echo "::notice::DRY_RUN=1 — skipping push"
+          echo "::notice::DRY_RUN=1 — skipping push (would push tag $tag)"
           exit 0
         fi
         git push "$REMOTE" HEAD --follow-tags

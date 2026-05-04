@@ -20,3 +20,4 @@ include:
     inputs:
       remote: $[[ inputs.remote ]]
       dry-run: $[[ inputs.dry-run ]]
+  - component: $CI_SERVER_FQDN/driftsys/ci/release-notes@$CI_COMPONENT_REF

@@ -2,11 +2,12 @@
 
 The driftsys default release pipeline as a GitHub Actions reusable workflow. One
 adoption line gets you commit-message validation on every PR plus a semver
-bump-and-tag on every push to the default branch.
+bump-and-tag plus a published release page with auto-generated notes on every
+push to the default branch.
 
-It's a thin preset over the [commitlint](../commitlint/README.md) and
-[release](../release/README.md) actions — same defaults, fewer lines of YAML in
-your repo.
+It's a thin preset over the [commitlint](../commitlint/README.md),
+[release](../release/README.md), and [release-notes](../release-notes/README.md)
+actions — same defaults, fewer lines of YAML in your repo.
 
 ## Inputs
 
@@ -35,8 +36,10 @@ jobs:
 
 ## Notes
 
-- The caller's job needs `contents: write` so the release job can push the tag.
-- The `commitlint` job only runs on `pull_request`; the `release` job only runs
-  on `push` to `main`. The reusable workflow gates them internally.
+- The caller's job needs `contents: write` so the `release` and `release-notes`
+  jobs can push the tag and publish the release page.
+- Job gates: `commitlint` runs on `pull_request`; `release` and `release-notes`
+  run on `push` to `main`. The reusable workflow handles all gating internally.
+- `release-notes` runs after `release` and is skipped when `dry-run: true`.
 - The actual workflow file lives at `.github/workflows/standard-release.yml`;
   this directory only holds the docs chapter.
