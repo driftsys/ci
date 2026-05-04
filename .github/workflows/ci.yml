@@ -15,20 +15,8 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
 
-      # On a pull_request, github.head_ref checks out the PR branch and
-      # `main` only exists as origin/main. Fetch it into a local ref so the
-      # commitlint range resolves.
-      - name: Ensure local main branch ref
-        if: github.event_name == 'pull_request'
-        run: git fetch origin main:refs/heads/main
-
-      # Dogfood our own commitlint action. It installs git-std itself, so we
-      # don't need a separate Install git-std step.
-      - name: Lint commits
-        if: github.event_name == 'pull_request'
-        uses: ./actions/commitlint
-        with:
-          range: main..HEAD
+      # Commit linting is handled by the standard-release reusable workflow
+      # in release.yml — no need to duplicate it here.
 
       - name: Install mdBook
         uses: peaceiris/actions-mdbook@v2

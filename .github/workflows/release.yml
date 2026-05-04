@@ -1,0 +1,17 @@
+name: release
+
+# Dogfood our own standard-release reusable workflow on this repo.
+# - On pull_request: validates the PR's commits via the inner commitlint job.
+# - On push to main: bumps semver, pushes the tag, and publishes the GH
+#   release with auto-generated notes.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  std:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/standard-release.yml
