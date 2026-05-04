@@ -65,6 +65,32 @@ strictly builds trust.
 **For pre-1.0 components,** use `v0.x` and communicate that the API may change.
 Consumers who need stability should wait for `v1`.
 
+## Presets and bundles
+
+Single-purpose components are easy to maintain and easy to compose, but
+consumers don't want to rediscover the canonical composition every time. Mature
+catalogues offer **presets** — opinionated combinations with the event gates,
+permissions, and orchestration baked in.
+
+**On GitHub, presets must be reusable workflows, not composite actions.** A
+composite action lives inside one job and inherits its triggers from the caller;
+a preset that runs commitlint on PRs and release on push-to-main needs two
+separate jobs with different `if:` event gates and different permissions. That's
+only expressible as a reusable workflow (`on: workflow_call`).
+
+**On GitLab, a preset is just another component** whose template body is an
+`include:` list of sub-components. The trick is propagating the consumer's
+pinned ref to the sub-components: `$CI_COMPONENT_REF` resolves to whatever the
+consumer pinned (`@v0.1.0` → exact tag, `@~latest` → rolling), so writing
+`commitlint@$CI_COMPONENT_REF` inside the preset gives byte-reproducibility for
+free.
+
+**Pin sub-components to the rolling-major on GitHub.** GH lacks
+`$CI_COMPONENT_REF`'s equivalent — there's no built-in way for a reusable
+workflow to forward its own caller's ref. Pin to `@v0` (rolling) and rely on the
+major-stability promise. Consumers who need byte-reproducibility SHA-pin the
+preset itself, which transitively freezes everything inside.
+
 ## Discoverability
 
 **README at the action root.** `driftsys/ci/actions/commitlint/README.md` is
@@ -162,9 +188,19 @@ Based on the above, we adopt the following concrete rules:
 4. **Rolling `v0` branch** tracks the latest release; semver tags for pinning.
 5. **GitLab variants pin `image:` to `ghcr.io/driftsys/dock:<image>-v<ver>`** by
    default; consumers can override via the `image` input.
-6. **Composite actions** (not Docker-based) unless the required tooling is not
-   available in `:core`/`:lint` and installing it inline is unreasonable.
-7. **Explicit `permissions:` blocks** at the job level in all provided example
+6. **Components on GitHub are composite actions** (not Docker-based) unless the
+   required tooling is missing from `:core`/`:lint` and installing it inline is
+   unreasonable. **Presets on GitHub are reusable workflows**, since they span
+   multiple jobs with distinct triggers.
+7. **Inline shell** in `action.yml` and `template.yml` rather than calling out
+   to shared `scripts/*.sh`. GitLab components run with the consumer's checkout
+   as CWD and can't reach `driftsys/ci/scripts/`; inlining keeps each artifact
+   self-contained when published.
+8. **GitLab inputs go through `variables:`.** `$[[ inputs.x ]]` references live
+   in the `variables:` block; `script:` bodies use the resulting `$VAR` only.
+   That keeps `script:` bodies pure bash and shellcheckable
+   (`scripts/lint-gitlab-shell.sh` extracts and validates them).
+9. **Explicit `permissions:` blocks** at the job level in all provided example
    workflows.
-8. **`continue-on-error`** is never set by default; it is an explicit opt-in
-   input if we add it.
+10. **`continue-on-error`** is never set by default; it is an explicit opt-in
+    input if we add it.

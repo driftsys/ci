@@ -133,24 +133,41 @@ dropped when we inlined the scripts).
 
 ### Layer 1 — Static checks (every PR, < 1 min)
 
-Run by `just verify` → `just build` → `just lint`:
+`.github/workflows/ci.yml` runs each tool as a separate, named step so the
+GitHub UI surfaces granular pass/fail. The same set of checks is also driven
+locally by `just verify` (which runs `git std lint --range main..HEAD` plus the
+`just lint` + `just assemble` recipes — `just` is a local-developer convenience
+and is not used in CI).
 
+Per-PR, in order:
+
+- `./actions/commitlint` — dogfooded against the PR's own commit range
+  (`main..HEAD`). On `push` to main this step is skipped (the commits were
+  already validated by their PR).
 - `dprint check` — formatting.
-- `markdownlint-cli2` — markdown structure.
+- `npx markdownlint-cli2` — markdown structure.
 - `shellcheck` + `shfmt -d` — quality of helper scripts under `scripts/`.
-- `actionlint` — shellchecks inline shell in `action.yml`.
+- `actionlint` — shellchecks inline shell in every `action.yml` and the reusable
+  workflows under `.github/workflows/`.
+- `scripts/schema-check.sh` — `action.yml` + `template.yml` schema validation.
 - `scripts/lint-gitlab-shell.sh` — extracts and shellchecks inline shell in
   `template.yml`.
-- `scripts/schema-check.sh` — `action.yml` + `template.yml` schema validation.
+- `mdbook build` — book builds without broken refs.
 
-### Layer 2 — Live GH Actions smoke (every PR, ~ 5 min)
+### Layer 2 — Live GH Actions smoke (every PR, ~ 1 min)
 
-Run by `.github/workflows/smoke-components.yml`:
+`.github/workflows/smoke-components.yml` runs each component against a
+synthesized fixture on a real GitHub-hosted runner:
 
-- One smoke job per action, using `uses: ./actions/<name>` against a synthesized
-  fixture commit.
-- At least one error-path smoke per action (bad input should fail the step, and
-  we assert `outcome == 'failure'`).
+- `commitlint (good commit)` — happy path, asserts success.
+- `commitlint (bad commit — expect failure)` — error path, uses
+  `continue-on-error: true` and asserts `steps.<id>.outcome == 'failure'`.
+- `release (dry-run)` — runs `git std bump` + skips push.
+
+Presets aren't separately smoked — they compose components that are already
+covered, and the orchestration (event gates, permissions) is structurally
+validated by `actionlint` + schema-check. Add a dedicated preset smoke only if a
+preset grows non-trivial logic of its own.
 
 ### Layer 3 — GitLab mirror smoke (on tag, async)
 
@@ -171,11 +188,11 @@ Run by `.github/workflows/smoke-components.yml`:
 
 The layers are implemented as follows in this repo:
 
-| Layer | Location                                   | Status               |
-| ----- | ------------------------------------------ | -------------------- |
-| 1     | `just verify` + `.github/workflows/ci.yml` | Shipped              |
-| 2     | `.github/workflows/smoke-components.yml`   | Shipped              |
-| 3     | `.gitlab-ci.yml` on GL mirror              | Pending mirror setup |
+| Layer | Location                                 | Status               |
+| ----- | ---------------------------------------- | -------------------- |
+| 1     | `.github/workflows/ci.yml`               | Shipped              |
+| 2     | `.github/workflows/smoke-components.yml` | Shipped              |
+| 3     | `.gitlab-ci.yml` on GL mirror            | Pending mirror setup |
 
 Every new component added to this repo must include Layer 2 coverage (a smoke
 step in `smoke-components.yml`, happy path + error path). This is enforced by
