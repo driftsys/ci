@@ -1,5 +1,9 @@
 # driftsys/ci
 
+[![ci](https://img.shields.io/github/actions/workflow/status/driftsys/ci/ci.yml?branch=main&label=ci)](https://github.com/driftsys/ci/actions/workflows/ci.yml)
+[![latest](https://img.shields.io/github/v/tag/driftsys/ci?label=latest)](https://github.com/driftsys/ci/tags)
+[![docs](https://img.shields.io/badge/docs-driftsys.github.io%2Fci-blue)](https://driftsys.github.io/ci/)
+
 Reusable **GitHub Actions** and **GitLab CI components** for the driftsys org.
 
 Canonical repo: <https://github.com/driftsys/ci>. Mirrored to GitLab so GitLab
