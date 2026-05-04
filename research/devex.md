@@ -155,8 +155,8 @@ Based on the above, we adopt the following concrete rules:
 1. **One responsibility per component.** commitlint validates commits; release
    bumps and pushes. They do not double as general-purpose shell runners.
 2. **All inputs documented** in both the YAML (`action.yml` / `template.yml`)
-   and the component's `README.md` — the README doubles as the published
-   chapter in the user guide.
+   and the component's `README.md` — the README doubles as the published chapter
+   in the user guide.
 3. **Outputs are JSON** when the value is structured (e.g. a list of failed
    commit SHAs).
 4. **Rolling `v0` branch** tracks the latest release; semver tags for pinning.

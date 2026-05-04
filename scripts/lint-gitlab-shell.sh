@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Extract `script:` lines from each GitLab component template and run
-# shellcheck against them.
+# Extract `script:` lines from each GitLab component template and run them
+# through shellcheck.
 #
 # Convention: GL component templates must pipe `$[[ inputs.x ]]` through the
 # `variables:` block; `script:` bodies use plain bash variables only. That
@@ -17,8 +17,8 @@ for f in components/*/template.yml; do
     continue
   fi
   echo "==> shellcheck script lines in $f"
-  if ! printf '#!/usr/bin/env bash\nset -e\n%s\n' "$shell" \
-    | shellcheck -s bash -; then
+  if ! printf '#!/usr/bin/env bash\nset -e\n%s\n' "$shell" |
+    shellcheck -s bash -; then
     fail=1
   fi
 done

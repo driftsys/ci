@@ -25,27 +25,28 @@ Composite GitHub Action that validates Conventional Commits in a git range using
 GitHub does not expose a single "compare-against" variable, so the right value
 for `range` depends on the workflow trigger. Use this table:
 
-| Event              | Recommended `range`                                       | Notes                                                                            |
-| ------------------ | --------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `pull_request`     | `${{ github.event.pull_request.base.sha }}..HEAD`         | Lints commits introduced by the PR. Requires `fetch-depth: 0`.                   |
-| `merge_group`      | `${{ github.event.merge_group.base_sha }}..HEAD`          | Same idea for GitHub merge queues.                                               |
-| `push` to a branch | `${{ github.event.before }}..${{ github.sha }}`           | Lints commits in this push. **Fails** on the first push to a new branch (see below). |
-| `workflow_dispatch` / `schedule` | `<last-tag>..HEAD` (e.g. `$(git describe --tags --abbrev=0)..HEAD`) | No event SHA is available; pass an explicit anchor.                              |
+| Event                            | Recommended `range`                                                 | Notes                                                                                |
+| -------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `pull_request`                   | `${{ github.event.pull_request.base.sha }}..HEAD`                   | Lints commits introduced by the PR. Requires `fetch-depth: 0`.                       |
+| `merge_group`                    | `${{ github.event.merge_group.base_sha }}..HEAD`                    | Same idea for GitHub merge queues.                                                   |
+| `push` to a branch               | `${{ github.event.before }}..${{ github.sha }}`                     | Lints commits in this push. **Fails** on the first push to a new branch (see below). |
+| `workflow_dispatch` / `schedule` | `<last-tag>..HEAD` (e.g. `$(git describe --tags --abbrev=0)..HEAD`) | No event SHA is available; pass an explicit anchor.                                  |
 
 ### Edge cases on `push`
 
 - **First push to a new branch.** `github.event.before` is
   `0000000000000000000000000000000000000000`, so `before..HEAD` is invalid.
-  Either guard the step (`if: github.event.before != '0000000000000000000000000000000000000000'`)
-  or fall back to `<base-branch>..HEAD`.
-- **Force-push.** `github.event.before` points at the pre-push tip, which may
-  no longer be reachable from the new HEAD. Lint will report `invalid range`.
+  Either guard the step
+  (`if: github.event.before != '0000000000000000000000000000000000000000'`) or
+  fall back to `<base-branch>..HEAD`.
+- **Force-push.** `github.event.before` points at the pre-push tip, which may no
+  longer be reachable from the new HEAD. Lint will report `invalid range`.
   Either skip the step on force-push or always lint against the base branch.
-- **Merge commits in the range.** GitHub's auto-generated `Merge {sha} into
-  {sha}` commits on `refs/pull/N/merge` are *not* recognised as process
-  commits by git-std. Avoid this by checking out the PR head ref directly
-  (`with: { ref: ${{ github.head_ref }} }`) so HEAD is the PR tip, not the
-  synthetic merge.
+- **Merge commits in the range.** GitHub generates a synthetic merge commit at
+  `refs/pull/N/merge` whose subject is `Merge <head_sha> into <base_sha>`.
+  git-std doesn't recognise this as a process commit. Avoid it by checking out
+  the PR head ref directly: `with: { ref: ${{ github.head_ref }} }` so HEAD is
+  the PR tip, not the synthetic merge.
 
 ## Notes
 
