@@ -1,12 +1,10 @@
 name: mirror-gitlab
 
-# Push-mirror this repo to gitlab.com/driftsys/ci. Free-tier GitLab.com
-# doesn't expose pull-mirroring, so we drive the sync from this side.
-#
-# Triggered on every push to a ref the GL side cares about:
-#   - main          (the source-of-truth branch)
-#   - v<MAJOR>      (rolling-major pointers consumers pin to)
-#   - tags vX.Y.Z   (where the GL CI Catalog publishes from)
+# Push-mirror this repo to gitlab.com/driftsys/ci at every release.
+# Triggered only on tag push — that's when the GL side actually cares:
+# a tag is what the GL CI Catalog keys publication off, and
+# `git push --mirror` brings main, v<MAJOR>, and every other ref along
+# for the ride in the same shot.
 #
 # Setup (one-time):
 #   1. On gitlab.com → driftsys/ci → Settings → Access Tokens, create a
@@ -15,13 +13,10 @@ name: mirror-gitlab
 #   2. Copy the token into this repo's Settings → Secrets and variables
 #      → Actions → New repository secret, name `GITLAB_TOKEN`.
 #   3. (Optional) Run this workflow manually once via the Actions tab to
-#      perform the initial mirror.
+#      perform the initial mirror, before the next tag lands.
 
 on:
   push:
-    branches:
-      - main
-      - "v*"
     tags:
       - "v*"
   workflow_dispatch:

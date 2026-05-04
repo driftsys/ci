@@ -189,9 +189,10 @@ tests the exact revision it was triggered from — no skew between catalog
 publication and Layer 3 verification.
 
 GitHub stays the source of truth. Sync direction is push-mirror from this repo
-via `.github/workflows/mirror-gitlab.yml` — free-tier GitLab.com no longer
-exposes pull-mirroring, so we drive the sync from the GH side on every push to
-`main`, the rolling `v<MAJOR>` branches, and `v*` tags.
+via `.github/workflows/mirror-gitlab.yml`, which fires on `v*` tag push and
+`git push --mirror`s every ref in one shot — main, `v<MAJOR>`, and the
+freshly-pushed tag all land together. Syncing only at release moments keeps the
+surface area small.
 
 ### What we explicitly skip
 
