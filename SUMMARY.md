@@ -1,6 +1,6 @@
 # Summary
 
-[Introduction](README.md)
+[Introduction](docs/intro.md)
 
 # GitHub Actions
 
@@ -14,9 +14,9 @@
 
 # Recipes
 
-- [PR validation](recipes/pr-validation.md)
+- [PR validation](docs/recipes/pr-validation.md)
 
 # Research
 
-- [DevEx survey](research/devex.md)
-- [Testing CI frameworks](research/testing-ci-frameworks.md)
+- [DevEx survey](docs/research/devex.md)
+- [Testing CI frameworks](docs/research/testing-ci-frameworks.md)
