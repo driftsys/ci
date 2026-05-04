@@ -21,10 +21,11 @@ are aligned across both.
 
 ## Components
 
-| Component  | What it does                                                                              |
-| ---------- | ----------------------------------------------------------------------------------------- |
-| commitlint | Validate commit messages against the Conventional Commits spec, using `git std lint`.     |
-| release    | Bump semver per the commits since the last tag, commit + tag, then push (`git std bump`). |
+| Component     | What it does                                                                              |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| commitlint    | Validate commit messages against the Conventional Commits spec, using `git std lint`.     |
+| release       | Bump semver per the commits since the last tag, commit + tag, then push (`git std bump`). |
+| release-notes | Publish a release page with notes from a tag (GH auto-notes; GL composes from `git log`). |
 
 ## Presets
 

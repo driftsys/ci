@@ -11,10 +11,11 @@ components can be exercised on real pipelines.
 
 ## Components
 
-| Name       | GH Action                        | GitLab Component         |
-| ---------- | -------------------------------- | ------------------------ |
-| commitlint | `driftsys/ci/actions/commitlint` | `driftsys/ci/commitlint` |
-| release    | `driftsys/ci/actions/release`    | `driftsys/ci/release`    |
+| Name          | GH Action                           | GitLab Component            |
+| ------------- | ----------------------------------- | --------------------------- |
+| commitlint    | `driftsys/ci/actions/commitlint`    | `driftsys/ci/commitlint`    |
+| release       | `driftsys/ci/actions/release`       | `driftsys/ci/release`       |
+| release-notes | `driftsys/ci/actions/release-notes` | `driftsys/ci/release-notes` |
 
 ## Presets
 

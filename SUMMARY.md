@@ -7,6 +7,7 @@
 - [Components]()
   - [commitlint](actions/commitlint/README.md)
   - [release](actions/release/README.md)
+  - [release-notes](actions/release-notes/README.md)
 - [Presets]()
   - [standard-release](actions/standard-release/README.md)
 
@@ -15,6 +16,7 @@
 - [Components]()
   - [commitlint](components/commitlint/README.md)
   - [release](components/release/README.md)
+  - [release-notes](components/release-notes/README.md)
 - [Presets]()
   - [standard-release](components/standard-release/README.md)
 
