@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.2] (2026-05-04)
+
+### Bug Fixes
+
+- **components:** move components/ -> templates/ for GitLab CI Catalog
+  ([2ac54ef])
+
+[0.1.2]: https://github.com/driftsys/ci/compare/v0.1.1...v0.1.2
+[2ac54ef]: https://github.com/driftsys/ci/commit/2ac54ef
+
 ## [0.1.1] (2026-05-04)
 
 ### Bug Fixes
