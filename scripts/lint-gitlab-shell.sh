@@ -8,7 +8,7 @@
 set -euo pipefail
 
 fail=0
-for f in components/*/template.yml; do
+for f in templates/*/template.yml; do
   [ -f "$f" ] || continue
   shell=$(yq eval-all \
     'select(documentIndex == 1) | .. | select(has("script")) | .script[]' "$f")

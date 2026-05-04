@@ -14,11 +14,11 @@
 # GitLab CI/CD
 
 - [Components]()
-  - [commitlint](components/commitlint/README.md)
-  - [release](components/release/README.md)
-  - [release-notes](components/release-notes/README.md)
+  - [commitlint](templates/commitlint/README.md)
+  - [release](templates/release/README.md)
+  - [release-notes](templates/release-notes/README.md)
 - [Presets]()
-  - [standard-release](components/standard-release/README.md)
+  - [standard-release](templates/standard-release/README.md)
 
 # Recipes
 

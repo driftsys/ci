@@ -21,7 +21,7 @@ done
 # against the GitLab CI schema. We write to a temp dir under a `.yml` name
 # so check-jsonschema picks up the YAML filetype (BSD mktemp on macOS
 # doesn't accept --suffix, so use a temp dir + fixed filename).
-for f in components/*/template.yml; do
+for f in templates/*/template.yml; do
   [ -f "$f" ] || continue
   echo "==> Validating $f against GitLab CI schema (job document)"
   tmpdir=$(mktemp -d)

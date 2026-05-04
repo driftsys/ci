@@ -11,7 +11,7 @@ kinds of artifact:
   - `actions/<name>/{action.yml,README.md}` — composite GitHub Actions. Shell
     logic is inlined directly in `run:` blocks (no external scripts) so the
     action is self-contained when consumers `uses:` it.
-  - `components/<name>/{template.yml,README.md}` — GitLab CI components. Shell
+  - `templates/<name>/{template.yml,README.md}` — GitLab CI components. Shell
     logic is inlined in `script:` lines for the same reason: the consumer's
     checkout is CWD, and `driftsys/ci`'s files aren't on disk.
 - **Presets** — opinionated combinations of components plus orchestration (event
@@ -21,9 +21,9 @@ kinds of artifact:
     side are reusable workflows, not composite actions.
   - `actions/<name>/README.md` — the docs chapter for the GH preset (paired with
     the workflow file above; the directory holds docs only).
-  - `components/<name>/{template.yml,README.md}` — same shape as a component;
-    the template body is just an `include:` of the preset's sub-components,
-    pinned at `$CI_COMPONENT_REF` for reproducibility.
+  - `templates/<name>/{template.yml,README.md}` — same shape as a component; the
+    template body is just an `include:` of the preset's sub-components, pinned
+    at `$CI_COMPONENT_REF` for reproducibility.
 
 Other repo content:
 
@@ -116,7 +116,7 @@ CI on push-to-main, this becomes automatic.
 
 1. Create `actions/<name>/{action.yml,README.md}` with all logic inline in
    composite `run:` blocks.
-2. Create `components/<name>/{template.yml,README.md}` with all logic inline in
+2. Create `templates/<name>/{template.yml,README.md}` with all logic inline in
    `script:` lines (inputs piped through `variables:`).
 3. Link the two READMEs from the root `SUMMARY.md` under
    `# GitHub Actions → Components` and `# GitLab CI/CD → Components`.
@@ -130,7 +130,7 @@ CI on push-to-main, this becomes automatic.
    with appropriate `if:` event gates and least-privilege `permissions:`.
 2. Create `actions/<name>/README.md` — the docs chapter for the GH preset (no
    `action.yml`; the directory only holds docs).
-3. Create `components/<name>/{template.yml,README.md}` — the GitLab side. The
+3. Create `templates/<name>/{template.yml,README.md}` — the GitLab side. The
    template's body is an `include:` list pinning each sub-component at
    `$CI_COMPONENT_REF` so the preset's tag propagates to its parts.
 4. Link both READMEs from `SUMMARY.md` under `# GitHub Actions → Presets` and

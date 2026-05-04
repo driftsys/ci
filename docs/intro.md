@@ -14,7 +14,7 @@ Every artifact ships in two parallel forms:
 
 - a **composite GitHub Action** under `actions/<name>/`, or a **reusable
   workflow** under `.github/workflows/<name>.yml` for presets
-- a **GitLab CI component** at `components/<name>/`
+- a **GitLab CI component** at `templates/<name>/`
 
 Pick the form that matches your platform — the inputs, defaults, and behaviour
 are aligned across both.
