@@ -1,0 +1,18 @@
+# Layer 3 smoke: dogfood the components on the GitLab mirror.
+#
+# - On a merge_request pipeline: `commitlint` lints the MR's commits.
+# - On a default-branch pipeline: `release` runs in dry-run mode (bump +
+#   tag locally on the runner, no push), proving the template parses
+#   and the inline `script:` body executes cleanly.
+# - On a tag pipeline: `release-notes` publishes the GitLab Release.
+#   This is also what registers the components in the CI Catalog.
+#
+# Each include resolves `gitlab.com/driftsys/ci/<name>@<this-sha>`, so
+# the pipeline tests the same revision it was triggered from.
+
+include:
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/commitlint@$CI_COMMIT_SHA
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/release@$CI_COMMIT_SHA
+    inputs:
+      dry-run: true
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/release-notes@$CI_COMMIT_SHA

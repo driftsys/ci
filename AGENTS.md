@@ -32,6 +32,9 @@ Other repo content:
 - `book.toml` + `SUMMARY.md` at the repo root — mdBook published to GitHub
   Pages. Each component / preset README doubles as its book chapter.
 - `docs/intro.md`, `docs/recipes/`, `docs/research/` — narrative book content.
+- `.gitlab-ci.yml` at the repo root — Layer 3 smoke pipeline that runs on the
+  GitLab mirror (`gitlab.com/driftsys/ci`, pull-mirrored from this repo). It
+  also publishes the components to the GitLab CI Catalog on tag.
 
 GitLab components consume builder images from `driftsys/dock`
 (`ghcr.io/driftsys/dock:<image>-v<version>`).

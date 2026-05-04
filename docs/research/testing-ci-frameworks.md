@@ -169,12 +169,27 @@ covered, and the orchestration (event gates, permissions) is structurally
 validated by `actionlint` + schema-check. Add a dedicated preset smoke only if a
 preset grows non-trivial logic of its own.
 
-### Layer 3 — GitLab mirror smoke (on tag, async)
+### Layer 3 — GitLab mirror smoke
 
-- A `.gitlab-ci.yml` on the GitLab mirror that uses `include: component:` for
-  each component.
-- Triggered on tag push to the mirror.
-- First green run lands once the mirror is wired up (post-PR follow-up).
+The repo's root `.gitlab-ci.yml` includes each component at the current SHA and
+lets GitLab's normal pipeline rules fire the relevant jobs:
+
+- **Merge-request pipelines** run the `commitlint` job — the only event where
+  `$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD` is meaningful.
+- **Default-branch pipelines** run the `release` job in `dry-run: true` mode.
+  This proves the template parses, the inline `script:` body executes cleanly,
+  and `git std bump` works against real history without actually pushing.
+- **Tag pipelines** run the `release-notes` job, which both publishes the GitLab
+  Release for the tag _and_ registers the components in the GitLab CI Catalog
+  (the `release:` keyword is what GitLab keys catalog publication off).
+
+Each `include: component:` uses
+`$CI_SERVER_FQDN/$CI_PROJECT_PATH/<name>@$CI_COMMIT_SHA`, so a pipeline always
+tests the exact revision it was triggered from — no skew between catalog
+publication and Layer 3 verification.
+
+The mirror is configured as a one-way pull mirror from
+`https://github.com/driftsys/ci.git` so GitHub stays the source of truth.
 
 ### What we explicitly skip
 
@@ -188,11 +203,11 @@ preset grows non-trivial logic of its own.
 
 The layers are implemented as follows in this repo:
 
-| Layer | Location                                 | Status               |
-| ----- | ---------------------------------------- | -------------------- |
-| 1     | `.github/workflows/ci.yml`               | Shipped              |
-| 2     | `.github/workflows/smoke-components.yml` | Shipped              |
-| 3     | `.gitlab-ci.yml` on GL mirror            | Pending mirror setup |
+| Layer | Location                                 | Status  |
+| ----- | ---------------------------------------- | ------- |
+| 1     | `.github/workflows/ci.yml`               | Shipped |
+| 2     | `.github/workflows/smoke-components.yml` | Shipped |
+| 3     | `.gitlab-ci.yml` on the GL mirror        | Shipped |
 
 Every new component added to this repo must include Layer 2 coverage (a smoke
 step in `smoke-components.yml`, happy path + error path). This is enforced by
