@@ -26,5 +26,8 @@ include:
 
 - The job only runs on the default branch
   (`CI_COMMIT_BRANCH == CI_DEFAULT_BRANCH`).
+- The default `stage: release` is **not** a built-in GitLab stage. Either add it
+  to your `stages:` list at the root of `.gitlab-ci.yml`, or override the
+  `stage` input to one of the built-ins (`test` / `deploy` / `.post`).
 - The pipeline runner must have push access to the repository.
 - Override `image` to pin to a specific dock release.

@@ -28,6 +28,9 @@ include:
 - The job only runs on tag pipelines (`$CI_COMMIT_TAG` is set).
 - Notes are composed from `git log --pretty='- %s' PREV..TAG`. If no previous
   tag exists, the full history up to the tag is used.
+- The default `stage: release` is **not** a built-in GitLab stage. Either add it
+  to your `stages:` list at the root of `.gitlab-ci.yml`, or override the
+  `stage` input to one of the built-ins (`test` / `deploy` / `.post`).
 - This component intentionally uses the upstream `release-cli` image rather than
   a `driftsys/dock` image, since the dock catalogue doesn't ship `release-cli`
   today.

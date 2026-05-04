@@ -10,6 +10,12 @@
 # Each include resolves `gitlab.com/driftsys/ci/<name>@<this-sha>`, so
 # the pipeline tests the same revision it was triggered from.
 
+# commitlint defaults to `stage: test` (a built-in stage); release and
+# release-notes default to `stage: release`, which we have to declare.
+stages:
+  - test
+  - release
+
 include:
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/commitlint@$CI_COMMIT_SHA
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/release@$CI_COMMIT_SHA
