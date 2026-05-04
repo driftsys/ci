@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.3] (2026-05-04)
+
+### Bug Fixes
+
+- **ci:** declare `release` stage in root .gitlab-ci.yml ([05f939f])
+
+[0.1.3]: https://github.com/driftsys/ci/compare/v0.1.2...v0.1.3
+[05f939f]: https://github.com/driftsys/ci/commit/05f939f
+
 ## [0.1.2] (2026-05-04)
 
 ### Bug Fixes
