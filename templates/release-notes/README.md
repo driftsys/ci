@@ -13,7 +13,7 @@ subjects between the previous tag and the current tag.
 | Name    | Required | Default                                             | Description                               |
 | ------- | -------- | --------------------------------------------------- | ----------------------------------------- |
 | `image` | no       | `registry.gitlab.com/gitlab-org/release-cli:latest` | Container image with `release-cli` + git. |
-| `stage` | no       | `release`                                           | Pipeline stage for the release-notes job. |
+| `stage` | no       | `.post`                                             | Pipeline stage for the release-notes job. |
 
 ## Example
 
@@ -28,9 +28,6 @@ include:
 - The job only runs on tag pipelines (`$CI_COMMIT_TAG` is set).
 - Notes are composed from `git log --pretty='- %s' PREV..TAG`. If no previous
   tag exists, the full history up to the tag is used.
-- The default `stage: release` is **not** a built-in GitLab stage. Either add it
-  to your `stages:` list at the root of `.gitlab-ci.yml`, or override the
-  `stage` input to one of the built-ins (`test` / `deploy` / `.post`).
 - This component intentionally uses the upstream `release-cli` image rather than
   a `driftsys/dock` image, since the dock catalogue doesn't ship `release-cli`
   today.

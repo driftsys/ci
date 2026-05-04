@@ -5,7 +5,7 @@ spec:
       default: "registry.gitlab.com/gitlab-org/release-cli:latest"
     stage:
       description: "Pipeline stage for the release-notes job."
-      default: "release"
+      default: ".post"
 ---
 
 release-notes:

@@ -5,7 +5,7 @@ spec:
       default: "ghcr.io/driftsys/dock:core-v0.2.0"
     stage:
       description: "Pipeline stage."
-      default: "release"
+      default: "deploy"
     remote:
       description: "Remote to push to."
       default: "origin"
