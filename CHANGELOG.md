@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4] (2026-05-04)
+
+### Bug Fixes
+
+- **components:** default GL stages to built-ins (deploy, .post) ([612bca3])
+
+[0.1.4]: https://github.com/driftsys/ci/compare/v0.1.3...v0.1.4
+[612bca3]: https://github.com/driftsys/ci/commit/612bca3
+
 ## [0.1.3] (2026-05-04)
 
 ### Bug Fixes
