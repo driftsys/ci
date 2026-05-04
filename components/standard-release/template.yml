@@ -1,0 +1,22 @@
+spec:
+  inputs:
+    range:
+      description: "Commit range commitlint validates on MRs."
+      default: "$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD"
+    remote:
+      description: "Remote the release job pushes to."
+      default: "origin"
+    dry-run:
+      description: "If true, the release job bumps + tags but skips push."
+      default: "false"
+      type: boolean
+---
+
+include:
+  - component: $CI_SERVER_FQDN/driftsys/ci/commitlint@$CI_COMPONENT_REF
+    inputs:
+      range: $[[ inputs.range ]]
+  - component: $CI_SERVER_FQDN/driftsys/ci/release@$CI_COMPONENT_REF
+    inputs:
+      remote: $[[ inputs.remote ]]
+      dry-run: $[[ inputs.dry-run ]]

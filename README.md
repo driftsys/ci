@@ -16,26 +16,33 @@ components can be exercised on real pipelines.
 | commitlint | `driftsys/ci/actions/commitlint` | `driftsys/ci/commitlint` |
 | release    | `driftsys/ci/actions/release`    | `driftsys/ci/release`    |
 
+## Bundled pipelines
+
+| Name             | GH (reusable workflow)                                | GitLab Component                |
+| ---------------- | ----------------------------------------------------- | ------------------------------- |
+| standard-release | `driftsys/ci/.github/workflows/standard-release.yml` | `driftsys/ci/standard-release` |
+
 ## Quick example
 
-GitHub Actions (PR validation):
+The lazy default — commitlint on PRs + release on main, one line:
 
 ```yaml
-- uses: actions/checkout@v4
-  with: { fetch-depth: 0 }
-- uses: driftsys/ci/actions/commitlint@v0
-  with:
-    range: ${{ github.event.pull_request.base.sha }}..HEAD
+# .github/workflows/ci.yml
+on: [pull_request, push]
+jobs:
+  release:
+    permissions: { contents: write }
+    uses: driftsys/ci/.github/workflows/standard-release.yml@v0
 ```
 
-GitLab CI (merge-request validation):
-
 ```yaml
+# .gitlab-ci.yml
 include:
-  - component: gitlab.com/driftsys/ci/commitlint@~latest
+  - component: gitlab.com/driftsys/ci/standard-release@~latest
 ```
 
-See the per-component pages for inputs and edge cases.
+Individual components are documented per platform; see the per-component pages
+for inputs and edge cases.
 
 ## Versioning
 

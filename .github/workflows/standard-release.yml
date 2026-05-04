@@ -1,0 +1,65 @@
+name: standard-release
+
+on:
+  workflow_call:
+    inputs:
+      range:
+        description: "Range of commits commitlint validates on PRs."
+        required: false
+        type: string
+        default: ""
+      remote:
+        description: "Remote the release job pushes to."
+        required: false
+        type: string
+        default: "origin"
+      dry-run:
+        description: "If true, the release job bumps + tags but skips push."
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  commitlint:
+    if: github.event_name == 'pull_request'
+    name: commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - name: Resolve range
+        id: range
+        run: |
+          if [ -n "${{ inputs.range }}" ]; then
+            echo "value=${{ inputs.range }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${{ github.event.pull_request.base.sha }}..HEAD" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: driftsys/ci/actions/commitlint@v0
+        with:
+          range: ${{ steps.range.outputs.value }}
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.email release@driftsys.invalid
+          git config user.name "driftsys release"
+
+      - uses: driftsys/ci/actions/release@v0
+        with:
+          remote: ${{ inputs.remote }}
+          dry-run: ${{ inputs.dry-run && 'true' || 'false' }}

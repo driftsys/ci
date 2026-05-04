@@ -6,8 +6,8 @@ the driftsys org. Every block ships in two parallel forms:
 - a **composite GitHub Action** at `actions/<name>/`
 - a **GitLab CI component** at `components/<name>/`
 
-Pick the form that matches your platform — the inputs, defaults, and
-behaviour are aligned across both.
+Pick the form that matches your platform — the inputs, defaults, and behaviour
+are aligned across both.
 
 ## What's in here
 
@@ -15,6 +15,9 @@ behaviour are aligned across both.
 | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | [commitlint](../actions/commitlint/README.md) | Validate commit messages against the Conventional Commits spec, using [git-std](https://github.com/driftsys/git-std). |
 | [release](../actions/release/README.md)       | Bump the semver version per the commits since the last tag, commit + tag, then push.                                  |
+
+For the lazy default — PR commit lint plus release on main, in one line —
+adopt the [standard-release](../components/standard-release/README.md) bundle.
 
 ## How to use this guide
 

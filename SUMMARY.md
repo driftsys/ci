@@ -12,6 +12,10 @@
 - [commitlint](components/commitlint/README.md)
 - [release](components/release/README.md)
 
+# Bundled pipelines
+
+- [standard-release](components/standard-release/README.md)
+
 # Recipes
 
 - [PR validation](docs/recipes/pr-validation.md)
