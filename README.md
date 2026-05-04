@@ -16,7 +16,9 @@ components can be exercised on real pipelines.
 | commitlint | `driftsys/ci/actions/commitlint` | `driftsys/ci/commitlint` |
 | release    | `driftsys/ci/actions/release`    | `driftsys/ci/release`    |
 
-## Bundled pipelines
+## Presets
+
+Curated combinations of components, ready to drop in:
 
 | Name             | GH (reusable workflow)                               | GitLab Component               |
 | ---------------- | ---------------------------------------------------- | ------------------------------ |

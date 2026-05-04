@@ -32,3 +32,7 @@ MD041: false
 
 # mdBook SUMMARY.md uses multiple H1 headings as part titles.
 MD025: false
+
+# mdBook SUMMARY.md uses `[Title]()` (empty link) for draft / heading-only
+# chapters that group sub-pages.
+MD042: false

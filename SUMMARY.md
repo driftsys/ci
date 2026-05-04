@@ -4,17 +4,19 @@
 
 # GitHub Actions
 
-- [commitlint](actions/commitlint/README.md)
-- [release](actions/release/README.md)
+- [Components]()
+  - [commitlint](actions/commitlint/README.md)
+  - [release](actions/release/README.md)
+- [Presets]()
+  - [standard-release](actions/standard-release/README.md)
 
-# GitLab Components
+# GitLab CI/CD
 
-- [commitlint](components/commitlint/README.md)
-- [release](components/release/README.md)
-
-# Bundled pipelines
-
-- [standard-release](components/standard-release/README.md)
+- [Components]()
+  - [commitlint](components/commitlint/README.md)
+  - [release](components/release/README.md)
+- [Presets]()
+  - [standard-release](components/standard-release/README.md)
 
 # Recipes
 
