@@ -18,8 +18,8 @@ components can be exercised on real pipelines.
 
 ## Bundled pipelines
 
-| Name             | GH (reusable workflow)                                | GitLab Component                |
-| ---------------- | ----------------------------------------------------- | ------------------------------- |
+| Name             | GH (reusable workflow)                               | GitLab Component               |
+| ---------------- | ---------------------------------------------------- | ------------------------------ |
 | standard-release | `driftsys/ci/.github/workflows/standard-release.yml` | `driftsys/ci/standard-release` |
 
 ## Quick example

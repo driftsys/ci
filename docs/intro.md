@@ -16,8 +16,8 @@ are aligned across both.
 | [commitlint](../actions/commitlint/README.md) | Validate commit messages against the Conventional Commits spec, using [git-std](https://github.com/driftsys/git-std). |
 | [release](../actions/release/README.md)       | Bump the semver version per the commits since the last tag, commit + tag, then push.                                  |
 
-For the lazy default — PR commit lint plus release on main, in one line —
-adopt the [standard-release](../components/standard-release/README.md) bundle.
+For the lazy default — PR commit lint plus release on main, in one line — adopt
+the [standard-release](../components/standard-release/README.md) bundle.
 
 ## How to use this guide
 
@@ -43,5 +43,5 @@ how strict you need to be:
 
 ## Contributing
 
-Source lives at <https://github.com/driftsys/ci>. The repo's `README.md`
-covers local development and contribution guidance.
+Source lives at <https://github.com/driftsys/ci>. The repo's `README.md` covers
+local development and contribution guidance.

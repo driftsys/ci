@@ -12,11 +12,11 @@ fewer lines of YAML in your repo.
 
 ### Inputs
 
-| Name      | Required | Default                                              | Description                                                |
-| --------- | -------- | ---------------------------------------------------- | ---------------------------------------------------------- |
-| `range`   | no       | `${{ github.event.pull_request.base.sha }}..HEAD`    | Commit range commitlint validates on PRs.                  |
-| `remote`  | no       | `origin`                                             | Remote the release job pushes to.                          |
-| `dry-run` | no       | `false`                                              | If `true`, the release job bumps + tags but skips push.    |
+| Name      | Required | Default                                           | Description                                             |
+| --------- | -------- | ------------------------------------------------- | ------------------------------------------------------- |
+| `range`   | no       | `${{ github.event.pull_request.base.sha }}..HEAD` | Commit range commitlint validates on PRs.               |
+| `remote`  | no       | `origin`                                          | Remote the release job pushes to.                       |
+| `dry-run` | no       | `false`                                           | If `true`, the release job bumps + tags but skips push. |
 
 ### Example
 
@@ -45,11 +45,11 @@ jobs:
 
 ### Inputs
 
-| Name      | Required | Default                                 | Description                                              |
-| --------- | -------- | --------------------------------------- | -------------------------------------------------------- |
+| Name      | Required | Default                                 | Description                                             |
+| --------- | -------- | --------------------------------------- | ------------------------------------------------------- |
 | `range`   | no       | `$CI_MERGE_REQUEST_DIFF_BASE_SHA..HEAD` | Commit range commitlint validates on MRs.               |
-| `remote`  | no       | `origin`                                | Remote the release job pushes to.                        |
-| `dry-run` | no       | `false`                                 | If `true`, the release job bumps + tags but skips push.  |
+| `remote`  | no       | `origin`                                | Remote the release job pushes to.                       |
+| `dry-run` | no       | `false`                                 | If `true`, the release job bumps + tags but skips push. |
 
 ### Example
 
@@ -62,8 +62,8 @@ include:
 ### Notes
 
 - The component pins its sub-components (`commitlint`, `release`) at
-  `$CI_COMPONENT_REF`, so `standard-release@v0.2.0` reproducibly uses the
-  v0.2.0 sub-components.
+  `$CI_COMPONENT_REF`, so `standard-release@v0.2.0` reproducibly uses the v0.2.0
+  sub-components.
 - For finer control over a sub-component, include it directly instead of (or in
   addition to) `standard-release`; the standard pack only exposes the most
   common subset of inputs.
