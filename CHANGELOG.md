@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.1.1] (2026-05-04)
+
+### Bug Fixes
+
+- **scripts:** make schema-check.sh portable to BSD mktemp (macOS) ([c2a3e35])
+
+### Features
+
+- **presets:** integrate release-notes into standard-release ([9bda035])
+- **components:** release-notes — publish a release page from a tag
+  ([91c3641])
+
+### Documentation
+
+- refresh AGENTS and research notes for current architecture ([af922e0])
+
+[0.1.1]: https://github.com/driftsys/ci/compare/v0.1.0...v0.1.1
+[c2a3e35]: https://github.com/driftsys/ci/commit/c2a3e35
+[9bda035]: https://github.com/driftsys/ci/commit/9bda035
+[91c3641]: https://github.com/driftsys/ci/commit/91c3641
+[af922e0]: https://github.com/driftsys/ci/commit/af922e0
+
 ## 0.1.0 (2026-05-04)
 
 ### Bug Fixes
