@@ -1,0 +1,51 @@
+name: mirror-gitlab
+
+# Push-mirror this repo to gitlab.com/driftsys/ci. Free-tier GitLab.com
+# doesn't expose pull-mirroring, so we drive the sync from this side.
+#
+# Triggered on every push to a ref the GL side cares about:
+#   - main          (the source-of-truth branch)
+#   - v<MAJOR>      (rolling-major pointers consumers pin to)
+#   - tags vX.Y.Z   (where the GL CI Catalog publishes from)
+#
+# Setup (one-time):
+#   1. On gitlab.com → driftsys/ci → Settings → Access Tokens, create a
+#      project access token with role "Maintainer" and scope
+#      `write_repository`.
+#   2. Copy the token into this repo's Settings → Secrets and variables
+#      → Actions → New repository secret, name `GITLAB_TOKEN`.
+#   3. (Optional) Run this workflow manually once via the Actions tab to
+#      perform the initial mirror.
+
+on:
+  push:
+    branches:
+      - main
+      - "v*"
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    name: push to gitlab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GITLAB_URL: https://gitlab.com/driftsys/ci.git
+        run: |
+          set -euo pipefail
+          if [ -z "${GITLAB_TOKEN:-}" ]; then
+            echo "::error::GITLAB_TOKEN secret is not set; see workflow header for setup"
+            exit 1
+          fi
+          # `git clone --mirror` followed by `git push --mirror` is the
+          # canonical way to keep two remotes byte-identical (refs included).
+          git clone --mirror "https://github.com/${GITHUB_REPOSITORY}.git" repo
+          cd repo
+          git push --mirror "https://oauth2:${GITLAB_TOKEN}@${GITLAB_URL#https://}"

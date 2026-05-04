@@ -188,8 +188,10 @@ Each `include: component:` uses
 tests the exact revision it was triggered from — no skew between catalog
 publication and Layer 3 verification.
 
-The mirror is configured as a one-way pull mirror from
-`https://github.com/driftsys/ci.git` so GitHub stays the source of truth.
+GitHub stays the source of truth. Sync direction is push-mirror from this repo
+via `.github/workflows/mirror-gitlab.yml` — free-tier GitLab.com no longer
+exposes pull-mirroring, so we drive the sync from the GH side on every push to
+`main`, the rolling `v<MAJOR>` branches, and `v*` tags.
 
 ### What we explicitly skip
 
